@@ -10,7 +10,7 @@ use super::schema::posts;
 #[table_name="posts"] //macro
 pub struct NewPost<'a> //poder utilizar los std dentro de las estructuras (lifetime)
 {
-    pub title &'a str,
-    pub body &'a str,
-    pub slug &'a str
+    pub title: &'a str,
+    pub body: &'a str,
+    pub slug: &'a str
 }
