@@ -1,4 +1,4 @@
-#[derive(Queryable)] //esto se puede convertir en un row
+#[derive(Queryable, Debug)] //esto se puede convertir en un row
 pub struct Post {
     pub id: i32,
     pub title: String,

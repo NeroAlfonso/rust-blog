@@ -18,39 +18,23 @@ fn main() {
 
     //let post: Post =diesel::insert_into(posts::table).values(&new_post).get_result(&conn).expect("la inserción falló");
 
+    //Un solo atributo
+    /* let post_update = diesel::update(
+        posts.filter(id.eq(4)))
+            .set(slug.eq("lexlaloxx"))
+    .get_result::<Post>(&conn).expect("Error al actualizar");*/
+    //Multiples atributos
+    let post_update = diesel::update(
+        posts.filter(id.eq(4)))
+            .set((slug.eq("lexlaloxx2"), body.eq("cuerpotx 2")))
+    .get_result::<Post>(&conn).expect("Error al actualizar");
+
     //query completo
     let posts_result =posts.load::<Post>(&conn).expect("error al obtener los datos");
     println!("{}", "query completo");
     for post in posts_result 
     {
-        println!("{}", post.title);
-    }
-    //query limitado
-    let posts_result =posts.limit(1).load::<Post>(&conn).expect("error al obtener los datos");
-    println!("{}", "query limitado");
-    for post in posts_result 
-    {
-        println!("{}", post.title);
-    }
-    //query limitado con atributos
-    let posts_result =posts.select((title, slug)).limit(1).load::<PostTitleAndSlug>(&conn).expect("error al obtener los datos");
-    println!("{}", "query limitado con atributos");
-    for post in posts_result 
-    {
         println!("{:?}", post);
     }
-    //query ilimitado con orden
-    let posts_result =posts.order(id.desc()).load::<Post>(&conn).expect("error al obtener los datos");
-    println!("{}", "query ilimitado con orden");
-    for post in posts_result 
-    {
-        println!("{}", post.title);
-    }
-    //query ilimitado con condición
-    let posts_result =posts.filter(id.eq(2)).load::<Post>(&conn).expect("error al obtener los datos");
-    println!("{}", "query ilimitado con condición");
-    for post in posts_result 
-    {
-        println!("{}", post.title);
-    }
+    
 }
