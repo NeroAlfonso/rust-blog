@@ -9,5 +9,4 @@ RUN apt-get update && apt-get install -y libpq5
 WORKDIR /usr/local/bin/rust_blog
 COPY --from=build /usr/src/rust_blog .
 WORKDIR /usr/local/bin/rust_blog/target/release
-RUN ls
 CMD ["./rust-blog"]
