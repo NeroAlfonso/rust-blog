@@ -26,7 +26,10 @@ async fn index(pool: web::Data<DbPool>) -> impl Responder
 {
     let conn =pool.get().expect("Error al traer una conexión");
     match web::block(move ||{posts.load::<Post>(&conn)}).await {
-        Ok(data) => HttpResponse::Ok().body("Valores conseguidos"),
+        Ok(data) => 
+        {
+            HttpResponse::Ok().body(format!("{:?}", data))
+        },
         Err(err) => HttpResponse::Ok().body("Error al obtener los valores")
     }
 }
