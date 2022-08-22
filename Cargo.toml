@@ -12,3 +12,4 @@ actix-web =     "4"
 serde_json =    "1.0"
 json =          "0.12"
 serde =         {version = "1.0.104", features = ["derive"]}
+tera =          "1.10.0"

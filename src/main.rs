@@ -21,6 +21,8 @@ use self::models::{Post, NewPost, NewPostHandler};
 use self::schema::posts;
 use self::schema::posts::dsl::*;
 
+use tera::Tera;
+
 #[post("/post/new")]
 async fn new_post(pool: web::Data<DbPool>, item: web::Json<NewPostHandler>) -> impl Responder
 {
@@ -55,9 +57,11 @@ async fn load_posts(pool: web::Data<DbPool>) -> impl Responder
 }
 
 #[get("/")]
-async fn index(pool: web::Data<DbPool>) -> impl Responder
+async fn index(template_manager: web::Data<tera::Tera>) -> impl Responder
 {
-    HttpResponse::Ok().body(format!("RustBlog"))
+    let mut ctx = tera::Context::new();
+    HttpResponse::Ok().content_type("text/html")
+        .body(template_manager.render("index.html", &ctx).unwrap())
 }
 
 #[actix_web::main]
@@ -69,10 +73,12 @@ async fn main() -> std::io::Result<()> {
     let pool = Pool::builder().build(conn).expect("Error al construir el pool de conexiones");
 
     HttpServer::new(move ||{
+        let tera =Tera::new(concat!(env!("CARGO_MANIFEST_DIR"), "/templates/**/*")).unwrap();
         App::new()
             .service(index)
             .service(load_posts)
             .service(new_post)
                 .data(pool.clone())
-    }).bind(("0.0.0.0", 9900)).unwrap().run().await
+                .data(tera)
+    }).bind(("0.0.0.0", 9990)).unwrap().run().await
 }
