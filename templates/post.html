@@ -7,13 +7,12 @@
     <title>Document</title>
 </head>
 <body>
-    {% for post in posts %}
+    <main>
         <div>
-            <h1>
-                <a href="/post/{{post.slug}}">{{post.title}}</a>
-            </h1>
-            <p>{{post.body | truncate(lenght=15)}}</p>
+            <h1>{{post.title}}</h1>
+            <p>{{post.body}}</p>
+            <a href="/">Volver</a>
         </div>
-    {% endfor%}
+    </main>
 </body>
 </html>
