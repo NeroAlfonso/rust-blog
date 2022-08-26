@@ -99,6 +99,8 @@ async fn index(pool: web::Data<DbPool>, template_manager: web::Data<tera::Tera>)
 async fn main() -> std::io::Result<()> {
     dotenv().ok();
     let db_url =env::var("DATABASE_URL").expect("Error al obtener las variables de entorno");
+    let port =env::var("PORT").expect("Error al obtener las variables de entorno");
+    let port : u16 = port.parse().unwrap();
 
     let conn = ConnectionManager::<PgConnection>::new(db_url);
     let pool = Pool::builder().build(conn).expect("Error al construir el pool de conexiones");
@@ -112,5 +114,5 @@ async fn main() -> std::io::Result<()> {
             .service(get_post)
                 .data(pool.clone())
                 .data(tera)
-    }).bind(("0.0.0.0", 9990)).unwrap().run().await
+    }).bind(("0.0.0.0", port)).unwrap().run().await
 }
